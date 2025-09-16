@@ -10,12 +10,6 @@
                     class="rounded-xl px-4 py-2 text-sm font-semibold text-violet-200 ring-1 ring-white/10 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50">
                     Rafraîchir
                 </a>
-                <a href="{{ route('dashboard') }}"
-                    class="rounded-xl px-4 py-2 text-sm font-semibold text-white
-                          bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500
-                          shadow-lg shadow-fuchsia-900/20 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50">
-                    Générer une image
-                </a>
             </div>
         </div>
     </x-slot>
@@ -37,7 +31,7 @@
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div>
                             <h3 class="text-xl md:text-2xl font-semibold">Bienvenue {{ $user->login }} !</h3>
-                            <p class="mt-1 text-sm text-violet-200/80">Heureux de vous revoir sur Girls‑IA.</p>
+                            <p class="mt-1 text-sm text-violet-200/80">Heureux de vous revoir sur Girls‑Secrets.</p>
                         </div>
 
                         {{-- Quick actions mobile --}}
@@ -45,10 +39,6 @@
                             <a href="{{ route('dashboard') }}"
                                 class="rounded-xl px-3 py-2 text-xs font-semibold text-violet-200 ring-1 ring-white/10 hover:bg-white/10">
                                 Rafraîchir
-                            </a>
-                            <a href="{{ route('dashboard') }}"
-                                class="rounded-xl px-3 py-2 text-xs font-semibold text-white bg-gradient-to-r from-fuchsia-600 to-purple-600">
-                                Générer
                             </a>
                         </div>
                     </div>

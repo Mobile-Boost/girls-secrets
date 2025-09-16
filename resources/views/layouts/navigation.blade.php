@@ -10,7 +10,7 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5 ring-1 ring-white/10 hover:shadow-lg hover:shadow-fuchsia-900/20">
                         <span class="hidden sm:inline font-semibold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-violet-300">
-                            Girls‑IA
+                            Girls‑Secrets
                         </span>
                     </a>
                 </div>

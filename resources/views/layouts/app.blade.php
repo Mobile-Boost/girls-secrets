@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#0b0214">
 
-        <title>{{ config('app.name', 'Girls-IA') }}</title>
+        <title>{{ config('app.name', 'Girls-secrets') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#0b0214">
 
-        <title>{{ config('app.name', 'Girls-IA') }}</title>
+        <title>{{ config('app.name', 'Girls-secrets') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -30,7 +30,7 @@
                                    focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50">
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-violet-300
                                  font-semibold tracking-tight">
-                        Girls‑IA
+                        Girls‑Secrets
                     </span>
                 </a>
             </div>
