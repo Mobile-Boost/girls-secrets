@@ -1,0 +1,216 @@
+<?php
+
+use App\Http\Controllers\AutologController;
+use App\Http\Controllers\MobiyoWebhookController;
+use App\Http\Controllers\ProductAccessController;
+use App\Http\Controllers\GirlsProfileController;
+use App\Models\Profile;
+use App\Models\WebhookLog;
+use App\Models\Transaction;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
+
+Route::get('/abonnement', function () {
+    return view('abo'); 
+})->name('abo');
+
+Route::get('/contact', function () {
+    return view('contact'); 
+})->name('contact');
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+        $profiles = Profile::orderBy('order_index')->get();
+        return view('dashboard', compact('user', 'profiles'));
+    })->name('dashboard');
+
+    Route::get('/profiles', [GirlsProfileController::class, 'index'])->name('profiles.index');
+    Route::get('/profiles/{profile}', [GirlsProfileController::class, 'show'])->name('profiles.show');
+
+});
+
+Route::get('/webhooks/mobiyo', [MobiyoWebhookController::class, 'handle'])
+    ->name('webhooks.mobiyo')
+    ->middleware('throttle:60,1'); // anti-abus
+
+Route::get('/product/access', [ProductAccessController::class, 'access'])
+    ->name('product.access');
+
+
+Route::get('/login/{token}', [AutologController::class, 'autolog'])->name('autolog')->where('token', '[A-Za-z0-9]{64}');
+
+
+require __DIR__ . '/auth.php';
+
+# Routes de test pour le webhook Mobiyo (à supprimer en prod)
+Route::get('/test/mobiyo/simulate', function () {
+    return view('test.mobiyo-simulator');
+})->name('test.mobiyo.simulator');
+
+Route::get('/test/mobiyo/webhook', function () {
+    // Simule un webhook Mobiyo pour tests
+    $params = [
+        'action' => request('action', 'payment-confirm'),
+        'test' => 'true',
+        'subscriber_reference' => 'TEST_' . rand(100000, 999999),
+        'msisdn' => '+336' . rand(10000000, 99999999),
+        'transaction_id' => 'TXN_' . Str::random(16),
+        'date' => now()->toISOString(),
+        'status' => '0',
+        'status_description' => 'Success',
+        'access_type' => 'subscription',
+        'pricepoint_id' => '502',
+        'type' => 'Mpme',
+        'merchant_subscriber_reference' => 'My reference',
+        'customer_country' => 'FR',
+        'site_id' => '123456',
+        'product_id' => '987654',
+        'offer_id' => '55',
+        'amount' => '1.50',
+        'paid' => '1.50',
+        'currency' => 'EUR',
+        'reference_currency' => 'EUR',
+        'reference_amount' => '1.50',
+        'reference_paid' => '1.50',
+        'reference_payout' => '0.65',
+        'payout_currency' => 'EUR',
+        'carrier' => 'Orange',
+        'api_key' => config('mobiyo.api_key', 'test_key'),
+        'api_ts' => time(),
+        'api_hash' => 'sha1',
+        'api_sig' => 'test_signature_for_local',
+    ];
+    
+    // Construit l'URL du webhook avec tous les paramètres
+    $webhookUrl = route('webhooks.mobiyo') . '?' . http_build_query($params);
+    
+    return response()->json([
+        'webhook_url' => $webhookUrl,
+        'params' => $params,
+        'instructions' => [
+            '1. Copie cette URL dans Postman ou ton navigateur',
+            '2. Vérifie que le webhook fonctionne',
+            '3. Regarde les logs Laravel pour voir le traitement',
+            '4. Vérifie qu\'un utilisateur est créé et un token autolog généré'
+        ]
+    ]);
+})->name('test.mobiyo.webhook');
+
+
+# Routes de test pour visualiser les données webhook (à supprimer en prod)
+Route::get('/test/webhooks/list', function () {
+    $webhooks = WebhookLog::with(['user', 'transaction'])
+        ->orderBy('created_at', 'desc')
+        ->limit(50)
+        ->get();
+    
+    return response()->json([
+        'webhooks' => $webhooks->map(function ($webhook) {
+            return [
+                'id' => $webhook->id,
+                'provider' => $webhook->provider,
+                'action' => $webhook->action,
+                'transaction_id' => $webhook->transaction_id,
+                'subscriber_reference' => $webhook->subscriber_reference,
+                'msisdn' => $webhook->msisdn,
+                'status' => $webhook->status,
+                'amount' => $webhook->amount,
+                'currency' => $webhook->currency,
+                'signature_valid' => $webhook->signature_valid,
+                'error_message' => $webhook->error_message,
+                'created_at' => $webhook->created_at->format('Y-m-d H:i:s'),
+                'user' => $webhook->user ? [
+                    'id' => $webhook->user->id,
+                    'login' => $webhook->user->login,
+                    'subscribed' => $webhook->user->subscribed,
+                ] : null,
+                'transaction' => $webhook->transaction ? [
+                    'id' => $webhook->transaction->id,
+                    'action' => $webhook->transaction->action,
+                    'status' => $webhook->transaction->status,
+                ] : null,
+            ];
+        }),
+        'total_count' => WebhookLog::count(),
+        'success_count' => WebhookLog::where('signature_valid', true)->count(),
+        'error_count' => WebhookLog::where('signature_valid', false)->count(),
+    ]);
+})->name('test.webhooks.list');
+
+Route::get('/test/transactions/list', function () {
+    $transactions = Transaction::with(['user', 'webhookLogs'])
+        ->orderBy('created_at', 'desc')
+        ->limit(50)
+        ->get();
+    
+    return response()->json([
+        'transactions' => $transactions->map(function ($transaction) {
+            return [
+                'id' => $transaction->id,
+                'provider' => $transaction->provider,
+                'action' => $transaction->action,
+                'transaction_id' => $transaction->transaction_id,
+                'subscriber_reference' => $transaction->subscriber_reference,
+                'status' => $transaction->status,
+                'amount' => $transaction->amount,
+                'currency' => $transaction->currency,
+                'customer_country' => $transaction->customer_country,
+                'transaction_date' => $transaction->transaction_date?->format('Y-m-d H:i:s'),
+                'created_at' => $transaction->created_at->format('Y-m-d H:i:s'),
+                'user' => $transaction->user ? [
+                    'id' => $transaction->user->id,
+                    'login' => $transaction->user->login,
+                    'subscribed' => $transaction->user->subscribed,
+                    'credit_ia' => $transaction->user->credit_ia,
+                ] : null,
+                'webhook_logs_count' => $transaction->webhookLogs->count(),
+            ];
+        }),
+        'total_count' => Transaction::count(),
+        'by_action' => Transaction::selectRaw('action, COUNT(*) as count')
+            ->groupBy('action')
+            ->get()
+            ->pluck('count', 'action'),
+    ]);
+})->name('test.transactions.list');
+
+
+# Route pour tester l'autolog avec un token existant
+Route::get('/test/autolog/token/{user}', function (User $user) {
+    $activeToken = $user->autologTokens()
+        ->where('used', false)
+        ->where('expires_at', '>', now())
+        ->first();
+    
+    if (!$activeToken) {
+        // Créer un nouveau token si aucun n'est actif
+        $activeToken = AutologToken::issueFor($user, 1440); // 24h
+    }
+    
+    $autologUrl = route('autolog', ['token' => $activeToken->token]);
+    
+    return response()->json([
+        'user' => [
+            'id' => $user->id,
+            'login' => $user->login,
+            'subscribed' => $user->subscribed,
+            'credit_ia' => $user->credit_ia,
+        ],
+        'token' => $activeToken->token,
+        'autolog_url' => $autologUrl,
+        'expires_at' => $activeToken->expires_at->format('Y-m-d H:i:s'),
+        'instructions' => [
+            '1. Copie cette URL dans Postman ou ton navigateur',
+            '2. Tu seras automatiquement connecté et redirigé vers le dashboard',
+            '3. Le token ne peut être utilisé qu\'une seule fois'
+        ]
+    ]);
+})->name('test.autolog.token');
+
