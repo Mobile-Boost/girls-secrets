@@ -3,6 +3,8 @@
 use App\Http\Controllers\GirlsProfileController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Profile;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,5 +52,38 @@ Route::middleware('auth')->group(function () {
 
     
 });
+
+// TEMP: One-time route to create/reset a test user in production without SSH
+// Usage (replace <TOKEN>): https://app.girlsia.com/__create_test_user?token=<TOKEN>
+Route::get('/__create_test_user', function (Request $request) {
+    // Only allow in production
+    abort_unless(app()->environment('production'), 403);
+
+    // Simple token gate. Change this value and remove the route after use.
+    $provided = (string) $request->query('token');
+    $expected = 'g1rls1a-test-seed-2025';
+    abort_unless(hash_equals($expected, $provided), 403);
+
+    $login = 'testprod';
+    $email = 'testprod@example.com';
+    $password = 'MonSuperMot2Passe!'; // Will be hashed by model cast
+
+    $user = User::updateOrCreate(
+        ['login' => $login],
+        [
+            'email' => $email,
+            'password' => $password,
+            'credit_ia' => 0,
+            'subscribed' => false,
+        ]
+    );
+
+    return response()->json([
+        'ok' => true,
+        'login' => $login,
+        'password' => $password,
+        'user_id' => $user->id,
+    ]);
+})->name('tmp.create_test_user');
 
 require __DIR__.'/auth.php';
