@@ -4,6 +4,7 @@ use App\Http\Controllers\MobiyoWebhookController;
 use App\Http\Controllers\AutologController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductAccessController;
+use App\Http\Controllers\UserAdminController;
 use App\Models\WebhookLog;
 use App\Models\Transaction;
 use App\Models\User;
@@ -25,6 +26,10 @@ use Illuminate\Support\Str;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('ping', function () {
+    return response()->json(['pong' => true]);
 });
 
 // ============================================================================
@@ -55,4 +60,9 @@ Route::middleware('auth')->prefix('users')->group(function () {
     Route::get('product-access', [ProductAccessController::class, 'index'])->name('product.access');
     Route::post('product-access/check', [ProductAccessController::class, 'checkAccess'])->name('product.access.check');
 });
+
+// ============================================================================
+// ADMIN: création d'utilisateurs (protégé par X-Admin-Token)
+// ============================================================================
+Route::post('admin/users', [UserAdminController::class, 'store'])->name('admin.users.store');
 
