@@ -42,10 +42,6 @@
                         {{ $slot }}
                     </div>
                 </div>
-
-                <p class="mt-6 text-center text-xs text-violet-300/70">
-                    © {{ date('Y') }} Girls‑IA — Génération de modèles IA
-                </p>
             </div>
         </div>
     </body>
