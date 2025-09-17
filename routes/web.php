@@ -54,11 +54,10 @@ Route::middleware('auth')->group(function () {
 });
 
 // TEMP: One-time route to create/reset a test user in production without SSH
-// Usage (replace <TOKEN>): https://app.girlsia.com/__create_test_user?token=<TOKEN>
 Route::get('/__create_test_user', function (Request $request) {
     // Only allow in production
-    abort_unless(app()->environment('production'), 403);
-
+    abort_unless(app()->environment(['production', 'prod', 'live']), 403);
+    
     // Simple token gate. Change this value and remove the route after use.
     $provided = (string) $request->query('token');
     $expected = 'g1rls1a-test-seed-2025';
