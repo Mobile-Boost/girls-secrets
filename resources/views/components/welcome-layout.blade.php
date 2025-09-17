@@ -50,7 +50,7 @@
                         </svg>
                     </div>
                     <span class="font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-violet-300">
-                        Girls‑IA
+                        Girls‑Secrets
                     </span>
                 </a>
 
@@ -134,7 +134,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4M6 20a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
                         </svg>
                     </div>
-                    <span class="text-lg font-semibold">Girls‑IA</span>
+                    <span class="text-lg font-semibold">Girls‑Secrets</span>
                 </div>
                 <p class="text-violet-200/75">La technologie IA au service de votre créativité.</p>
             </div>
@@ -176,7 +176,7 @@
         </div>
 
         <div class="mx-auto max-w-7xl border-t border-white/10 mt-10 pt-6 text-center text-violet-200/70">
-            <p>&copy; {{ date('Y') }} Girls‑IA. Tous droits réservés.</p>
+            <p>&copy; {{ date('Y') }} Girls‑Secrets. Tous droits réservés.</p>
         </div>
     </footer>
 </body>

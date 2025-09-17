@@ -41,9 +41,9 @@
 
     <!-- Section Accès & Informations -->
     <section class="relative py-10 px-4 sm:px-6 lg:px-8">
-        <div class="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 items-stretch">
             <!-- Pour vous connecter -->
-            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6">
+            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6 flex flex-col h-full">
                 <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg
                             bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
@@ -72,7 +72,7 @@
             </div>
 
             <!-- Besoin d'aide / Nous contacter -->
-            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6">
+            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6 flex flex-col h-full">
                 <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg
                             bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -99,60 +99,10 @@
                 </div>
             </div>
 
-            <!-- Mon abonnement (statut, crédits, résiliation) -->
-            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6">
-                <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg
-                            bg-gradient-to-r from-rose-600 to-pink-600 text-white">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h10M5 19h14" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold">Mon abonnement</h3>
 
-                @auth
-                    @php $user = auth()->user(); @endphp
-
-                    <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="rounded-xl bg-black/20 ring-1 ring-white/10 p-4">
-                            <p class="text-sm text-violet-200/80">Statut</p>
-                            <div class="mt-2 inline-flex items-center gap-2 rounded-full px-2.5 py-1.5 text-xs font-semibold
-                                {{ $user->subscribed ? 'bg-emerald-500/10 text-emerald-200 ring-1 ring-emerald-500/20' : 'bg-rose-500/10 text-rose-200 ring-1 ring-rose-500/20' }}">
-                                @if($user->subscribed)
-                                    <span class="inline-block h-2 w-2 rounded-full bg-emerald-400"></span> Actif
-                                @else
-                                    <span class="inline-block h-2 w-2 rounded-full bg-rose-400"></span> Inactif
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="rounded-xl bg-black/20 ring-1 ring-white/10 p-4">
-                            <p class="text-sm text-violet-200/80">Crédits IA disponibles</p>
-                            <p class="mt-2 text-2xl font-semibold">{{ $user->credit_ia }}</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-5 flex flex-col sm:flex-row gap-3">
-                        @if($user->subscribed)
-                            <a href="mailto:contact@smartmob.fr?subject=R%C3%A9siliation%20abonnement%20Girls-IA&body=Bonjour%2C%20je%20souhaite%20r%C3%A9silier%20mon%20abonnement.%20Mon%20identifiant%20est%20{{ urlencode($user->login) }}."
-                               class="inline-flex items-center rounded-xl px-5 py-2.5 text-sm font-semibold text-rose-200 ring-1 ring-rose-400/30 hover:bg-rose-500/10">
-                                Annuler mon abonnement
-                            </a>
-                        @endif
-                    </div>
-                @else
-                    <p class="mt-3 text-violet-200/80">Connectez‑vous pour voir votre statut et vos crédits.</p>
-                    <div class="mt-4">
-                        <a href="{{ route('login') }}"
-                           class="inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold text-white
-                                  bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500">
-                            Me connecter
-                        </a>
-                    </div>
-                @endauth
-            </div>
 
             <!-- Paiements Internet+ -->
-            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6">
+            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6 flex flex-col h-full">
                 <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg
                             bg-gradient-to-r from-emerald-600 to-green-600 text-white">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">

@@ -44,7 +44,7 @@
                     </div>
 
                     {{-- Stat cards --}}
-                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                         {{-- Abonnement --}}
                         <div class="rounded-xl bg-black/30 ring-1 ring-white/10 p-4">
                             <p class="text-sm text-violet-200/70">Statut d’abonnement</p>
@@ -74,28 +74,7 @@
                             </div>
                         </div>
 
-                        {{-- Crédits --}}
-                        <div class="rounded-xl bg-black/30 ring-1 ring-white/10 p-4">
-                            <p class="text-sm text-violet-200/70">Crédits IA disponibles</p>
-                            <div class="mt-2 flex items-end justify-between">
-                                <p class="text-2xl font-semibold">{{ $user->credit_ia }}</p>
-                                @php
-                                $maxCredits = $user->credit_ia_max ?? 100;
-                                $pct = (int) min(100, max(0, round(($user->credit_ia / max(1, $maxCredits)) * 100)));
-                                @endphp
-                                <span class="text-xs text-violet-200/60">{{ $pct }}%</span>
-                            </div>
-                            <div class="mt-3 h-2 rounded-full bg-white/10 overflow-hidden">
-                                <div class="h-full rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600" style="width: {{ $pct }}%"></div>
-                            </div>
-
-                            @if($user->credit_ia < max(10, (int)($maxCredits * 0.1)))
-                                <a href="{{ Route::has('credits.topup') ? route('credits.topup') : '#' }}"
-                                class="mt-3 inline-block text-xs font-semibold text-fuchsia-300 hover:text-fuchsia-200">
-                                Recharger mes crédits →
-                                </a>
-                                @endif
-                        </div>
+                
 
                         {{-- Ancienneté --}}
                         <div class="rounded-xl bg-black/30 ring-1 ring-white/10 p-4">
@@ -118,9 +97,9 @@
                         </a>
                     </div>
 
-                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 items-stretch">
                         @foreach($profiles as $profile)
-                        <a href="{{ route('profiles.show', $profile) }}" class="group block rounded-2xl overflow-hidden ring-1 ring-purple-500/20 bg-black/30 hover:ring-fuchsia-500/30 transition-all duration-300">
+                        <a href="{{ route('profiles.show', $profile) }}" class="group block h-full rounded-2xl overflow-hidden ring-1 ring-purple-500/20 bg-black/30 hover:ring-fuchsia-500/30 transition-all duration-300 flex flex-col">
                             <div class="relative aspect-[4/3] overflow-hidden">
                                 @if(isset($profile->photos[0]))
                                 <img src="{{ $profile->photos[0] }}" alt="{{ $profile->name }}"
