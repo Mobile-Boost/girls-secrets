@@ -41,7 +41,7 @@
 
     <!-- Section Accès & Informations -->
     <section class="relative py-10 px-4 sm:px-6 lg:px-8">
-        <div class="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 items-stretch">
+        <div class="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 items-stretch">
             <!-- Pour vous connecter -->
             <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6 flex flex-col h-full">
                 <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg
@@ -98,26 +98,6 @@
                     </p>
                 </div>
             </div>
-
-
-
-            <!-- Paiements Internet+ -->
-            <div class="rounded-2xl bg-white/5 backdrop-blur border border-purple-500/20 p-6 flex flex-col h-full">
-                <div class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg
-                            bg-gradient-to-r from-emerald-600 to-green-600 text-white">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6.75h3.75a3 3 0 013 3v0a3 3 0 01-3 3H15m-6 0H6.75a3 3 0 01-3-3v0a3 3 0 013-3H9m3 6l-3-3m3 3l3-3"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold">Paiements Internet+</h3>
-                <p class="mt-2 text-violet-200/80">Plus d’informations sur :</p>
-                <p class="mt-1">
-                    <a href="https://www.surmafacture.fr" target="_blank" rel="noopener noreferrer"
-                       class="font-medium text-fuchsia-300 hover:text-fuchsia-200 underline underline-offset-4">
-                        www.surmafacture.fr
-                    </a>
-                </p>
-            </div>
         </div>
     </section>
 
@@ -147,7 +127,7 @@
             <div class="group relative rounded-2xl overflow-hidden bg-white/5 backdrop-blur border border-purple-500/20 p-6 sm:p-8">
                 <div class="absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-fuchsia-600/10 to-purple-600/10"></div>
                 <div class="relative">
-                    <h3 class="text-xl font-semibold">Je souhaite commencer à utiliser Girls-AI</h3>
+                    <h3 class="text-xl font-semibold">Je souhaite commencer à utiliser Girls-Secrets</h3>
                     <p class="mt-2 text-violet-200/80">
                         Gérez votre résiliation directement depuis votre espace.
                     </p>
